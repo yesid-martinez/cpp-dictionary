@@ -18,6 +18,7 @@ void mostrarDiccionario(const vector<Palabra> &diccionario);
 void modificarDescripcion(vector<Palabra> &diccionario);
 void eliminarPalabra(vector<Palabra> &diccionario);
 int obtenerOpcion();
+void buscarPalabra(const vector<Palabra>& diccionario);
 
 int main() {
   vector<Palabra> diccionario;
@@ -41,12 +42,15 @@ int main() {
       eliminarPalabra(diccionario);
       break;
     case 5:
+      buscarPalabra(diccionario);  // Llamada a la nueva función
+      break;
+    case 6:
       cout << "Saliendo del programa." << endl;
       break;
     default:
       cout << "Opción no válida. Intenta de nuevo." << endl;
     }
-  } while (opcion != 5);
+  } while (opcion != 6);
 
   return 0;
 }
@@ -57,7 +61,8 @@ void mostrarMenu() {
   cout << "2. Mostrar Diccionario" << endl;
   cout << "3. Modificar Descripción" << endl;
   cout << "4. Eliminar Palabra" << endl;
-  cout << "5. Salir" << endl;
+  cout << "5. Buscar Palabra" << endl;
+  cout << "6. Salir" << endl;
   cout << "Selecciona una opción: ";
 }
 
@@ -146,11 +151,29 @@ void eliminarPalabra(vector<Palabra> &diccionario) {
   cout << "Palabra no encontrada en el diccionario." << endl;
 }
 
+void buscarPalabra(const vector<Palabra>& diccionario) {
+    string palabraBuscada;
+    cout << "Introduce la palabra que deseas buscar: ";
+    cin >> palabraBuscada;
+
+    for (const auto& palabra : diccionario) {
+        if (palabra.texto == palabraBuscada) {
+            cout << "Palabra: " << palabra.texto << endl;
+            for (int i = 0; i < 3; ++i) {
+                cout << "Descripción " << (i + 1) << ": " << palabra.descripciones[i] << endl;
+            }
+            cout << "-------------------" << endl;
+            return;
+        }
+    }
+    cout << "Palabra no encontrada en el diccionario." << endl;
+}
+
 int obtenerOpcion() {
   int opcion;
   while (true) {
     cin >> opcion;
-    if (cin.fail() || opcion < 1 || opcion > 5) {
+    if (cin.fail() || opcion < 1 || opcion > 6) {
       cin.clear(); // Limpiar el estado de error
       cin.ignore(numeric_limits<streamsize>::max(),
                  '\n'); // Ignorar entrada incorrecta
